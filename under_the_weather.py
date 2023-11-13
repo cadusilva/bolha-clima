@@ -1,51 +1,52 @@
 #!/usr/bin/python3
 
+import os
 from mastodon import Mastodon, StreamListener
-
-from openweathermap import try_city, load_apikey
+from dotenv import load_dotenv
+from openweathermap import try_city
 
 
 class StreamListenerWeather(StreamListener):
     def __init__(self, mastodon: Mastodon):
-        self.apikey = load_apikey("/private/openweathermaps_api_key")
+        self.apikey = os.getenv('OWM_API')
 
         self.mastodon = mastodon
         super().__init__()
 
     def on_update(self, status):
         name = status.get("account", {}).get("acct")
-        print(f"received status from {name}.")
+        print(f"Status recebido de {name}.")
         if name == "UnderTheWeather":
-            print("this is just feedback!")
+            print("é apenas um feedback!")
 
     def on_notification(self, notification):
-        print("new notification!")
+        print("Nova notificação!")
         acct = notification.get("account").get("acct")
         notif_type = notification.get("type")
         if notif_type == "reblog":
-            print(f"post was reblogged by @{acct}")
+            print(f"Toot foi impulsionado por @{acct}")
             return
         elif notif_type == "favourite":
-            print(f"post was favourited by @{acct}")
+            print(f"Toot foi favoritado por @{acct}")
             return
         elif notif_type == "follow":
-            print(f"new follower: @{acct}")
+            print(f"Novo seguidor: @{acct}")
             return
         elif notif_type != "mention":
-            print("weird, unknown notification type.")
+            print("Que esquisito, um tipo de notificação desconhecido.")
             return
 
         status = notification.get("status")
         if status is None:
-            print("status was none.")
+            print("O status estava vazio.")
             return
 
         content = status.get("content")
         if content is None:
-            print("content was none.")
+            print("O status estava vazio.")
             return
 
-        print("message is: " + content)
+        print("A mensagem é: " + content)
         # example content (line break added for readability):
         # <p><span class="h-card" translate="no">
         # <a href="https://bolha.one/@clima" class="u-url mention">@<span>clima</span></a>
@@ -66,32 +67,33 @@ class StreamListenerWeather(StreamListener):
             self.mastodon.status_post(f"what do you want?", in_reply_to_id=status)
             return
 
-        print("TRYING: " + msg)
+        print("TENTANDO: " + msg)
         report = try_city(msg, self.apikey)
 
         if report:
             print(report)
             self.mastodon.status_post(f"@{acct}\n{report}", in_reply_to_id=status)
         else:
-            print("error 404")  # report was None
+            print("Erro 404")  # report was None
             self.mastodon.status_post(
-                f"sorry @{acct}, i didn't find your city :^(", in_reply_to_id=status
+                f"Foi mal @{acct}, não encontrei a cidade mencionada :(", in_reply_to_id=status
             )
 
 
 def main():
     mastodon = Mastodon(
-        client_id="pytooter_clientcred.secret",
+        access_token = os.getenv('MASTODON_TOKEN'),
+        api_base_url = os.getenv('MASTODON_BASE_URL')
     )
 
-    mastodon.account_update_credentials(note="prickly weather reporter")
-    print("online.")
+    mastodon.account_update_credentials(note= os.getenv('MASTODON_BIO_ONLINE') )
+    print("O bot está em funcionamento.")
     try:
         mastodon.stream_user(listener=StreamListenerWeather(mastodon))
     except KeyboardInterrupt:
-        print("interrupt received, signing off...")
-        mastodon.account_update_credentials(note="status: offline.\nask @danso.")
-        print("signed off successfully.")
+        print("Interrupção recebida, saindo...")
+        mastodon.account_update_credentials(note= os.getenv('MASTODON_BIO_OFFLINE') )
+        print("O bot foi encerrado com sucesso.")
 
 
 if __name__ == "__main__":
