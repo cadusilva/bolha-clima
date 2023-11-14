@@ -21,6 +21,24 @@ Agora edite o arquivo `.env`. Veja o que cada linha significa:
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 
+Para executar o bot, digite:
+
+```
+python3 under_the_weather.py
+```
+
+Agora basta falar com o bot. Exemplo:
+
+```
+@clima@bolha.one Recife
+```
+
+A resposta será algo assim:
+
+```
+Clima atual em Recife, BR: faz 27.02 °C com nuvens dispersas e umidade do ar em 83%.
+```
+
 ## Origem
 
 O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather).
