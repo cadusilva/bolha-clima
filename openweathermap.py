@@ -20,7 +20,6 @@
 
 import json
 import os
-import math
 import sys
 import typing
 import urllib.parse
@@ -53,9 +52,9 @@ def try_city(city_name, api_key: str, lang="pt_br") -> typing.Union[str, int]:
     country = json_data.get("sys").get("country")
     weather = json_data.get("weather")[0].get("description")
     temp = json_data.get("main").get("temp")
-    i_temp = math.floor(temp)
+    i_temp = "{:.1f}".format(temp)
     feels_like = json_data.get("main").get("feels_like")
-    i_feels_like = math.floor(feels_like)
+    i_feels_like = "{:.1f}".format(feels_like)
     humidity = json_data.get("main").get("humidity")
 
     return f"o clima atual em {city}, {country} é esse: faz {i_temp} \xb0C com sensação térmica de {i_feels_like} \xb0C, {weather} e umidade do ar em {humidity}%."
