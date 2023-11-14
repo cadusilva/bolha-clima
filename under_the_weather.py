@@ -67,7 +67,7 @@ class StreamListenerWeather(StreamListener):
 
         if report:
             print(report)
-            self.mastodon.status_post(f"@{acct}\n{report}", in_reply_to_id=status)
+            self.mastodon.status_post(f"@{acct} {report}", in_reply_to_id=status)
         else:
             print("Erro 404")  # report was None
             self.mastodon.status_post(
