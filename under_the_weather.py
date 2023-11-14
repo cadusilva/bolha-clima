@@ -59,7 +59,7 @@ class StreamListenerWeather(StreamListener):
         msg = " ".join((w for w in content.split() if not w.startswith("@")))
 
         if not msg:
-            self.mastodon.status_post(f"what do you want?", in_reply_to_id=status)
+            self.mastodon.status_post(f"@{acct} qual é? Qual foi? Por que é que tu tá nessa?", in_reply_to_id=status)
             return
 
         print("TENTANDO: " + msg)

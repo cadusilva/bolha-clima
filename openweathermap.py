@@ -38,7 +38,7 @@ def try_city(city_name, apiKey):
     temp = json_data.get("main").get("temp")
     humidity = json_data.get("main").get("humidity")
 
-    return f"Clima atual em {city}, {country}: faz {temp} \xb0C com {weather} e umidade do ar em {humidity}%"
+    return f"Clima atual em {city}, {country}: faz {temp} \xb0C com {weather} e umidade do ar em {humidity}%."
 
 
 if __name__ == "__main__":
