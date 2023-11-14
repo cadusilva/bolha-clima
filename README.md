@@ -36,8 +36,8 @@ Agora basta falar com o bot. Exemplo:
 A resposta será algo assim:
 
 ```
-O clima atual em Recife, BR é esse: faz 30 °C com sensação térmica de 34 °C,
-nuvens dispersas e umidade do ar em 66%.
+O clima atual em Recife, BR é esse: faz 30 °C com sensação
+térmica de 34 °C, nuvens dispersas e umidade do ar em 66%.
 ```
 
 ## Serviço do `systemd`
