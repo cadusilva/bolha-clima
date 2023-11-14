@@ -4,34 +4,32 @@ import json
 import os
 import math
 import sys
+import typing
 import urllib.parse
 import urllib.request
+
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q="
-DEFAULT_CITY = "recife"
-apiKey = os.getenv('OWM_API')
 
-def try_city(city_name, apiKey):
+
+def try_city(city_name, api_key: str, lang="pt_br") -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
         + "&mode=json&units=metric&lang="
-        + os.getenv('OWM_LANG')
+        + lang
         + "&APPID="
-        + os.getenv('OWM_API')
+        + api_key
     )
 
     try:
         with urllib.request.urlopen(full_api_url) as url:
             json_data = json.loads(url.read().decode("utf-8"))
     except urllib.request.HTTPError as exc:
-        print("Erro na API: ", exc)
-        return
+        return exc.code
 
     city = json_data.get("name")
     country = json_data.get("sys").get("country")
@@ -46,9 +44,11 @@ def try_city(city_name, apiKey):
 
 
 if __name__ == "__main__":
+    DEFAULT_CITY = "recife"
+    load_dotenv()
     print(
         try_city(
             sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CITY,
-            os.getenv('OWM_API'),
+            os.getenv("OWM_API"),
         )
     )

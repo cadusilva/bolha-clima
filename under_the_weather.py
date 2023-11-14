@@ -9,8 +9,8 @@ from openweathermap import try_city
 
 class StreamListenerWeather(StreamListener):
     def __init__(self, mastodon: Mastodon):
-        self.apikey = os.getenv('OWM_API')
-
+        self.apikey = os.getenv("OWM_API")
+        self.lang = os.getenv("OWM_LANG")
         self.mastodon = mastodon
         super().__init__()
 
@@ -44,7 +44,7 @@ class StreamListenerWeather(StreamListener):
 
         content = status.get("content")
         if content is None:
-            print("O status estava vazio.")
+            print("O conteúdo estava vazio.")
             return
 
         print("A mensagem é: " + content)
@@ -59,37 +59,64 @@ class StreamListenerWeather(StreamListener):
         msg = " ".join((w for w in content.split() if not w.startswith("@")))
 
         if not msg:
-            self.mastodon.status_post(f"@{acct} qual é? Qual foi? Por que é que tu tá nessa?", in_reply_to_id=status)
+            self.mastodon.status_post(
+                f"@{acct} qual é? Qual foi? Por que é que tu tá nessa?",
+                in_reply_to_id=status,
+            )
             return
 
         print("TENTANDO: " + msg)
-        report = try_city(msg, self.apikey)
+        report = try_city(msg, self.apikey, self.lang)
 
-        if report:
+        if isinstance(report, str):
             print(report)
             self.mastodon.status_post(f"@{acct} {report}", in_reply_to_id=status)
         else:
-            print("Erro 404")  # report was None
-            self.mastodon.status_post(
-                f"Foi mal @{acct}, não encontrei a cidade mencionada :(", in_reply_to_id=status
-            )
+            print(f"Erro {report}")
+            if report == 400:
+                self.mastodon.status_post(
+                    f"Foi mal @{acct}, não entendi sua mensagem :(",
+                    in_reply_to_id=status,
+                )
+            elif report == 401:
+                self.mastodon.status_post(
+                    f"Foi mal @{acct}, não estou conseguindo saber o clima. Pode dar uma ajuda aqui, @cadu@bolha.one ?",
+                    in_reply_to_id=status,
+                )
+            elif report == 404:
+                self.mastodon.status_post(
+                    f"Foi mal @{acct}, não encontrei a cidade mencionada :(",
+                    in_reply_to_id=status,
+                )
+            elif report == 429:
+                self.mastodon.status_post(
+                    f"Foi mal @{acct}, estou sobrecarregada. Pergunte mais tarde, ok? ;)",
+                    in_reply_to_id=status,
+                )
+            else:
+                self.mastodon.status_post(
+                    f"Parece que você encontrou uma falha, @{acct} ! "
+                    f"@cadu@bolha.one e @nandavereda@ayom.media tentarão resolver ;)",
+                    in_reply_to_id=status,
+                )
 
 
 def main():
     mastodon = Mastodon(
-        access_token = os.getenv('MASTODON_TOKEN'),
-        api_base_url = os.getenv('MASTODON_BASE_URL')
+        access_token=os.getenv("MASTODON_TOKEN"),
+        api_base_url=os.getenv("MASTODON_BASE_URL"),
     )
 
-    mastodon.account_update_credentials(note= os.getenv('MASTODON_BIO_ONLINE') )
+    mastodon.account_update_credentials(note=os.getenv("MASTODON_BIO_ONLINE"))
     print("O bot está em funcionamento.")
     try:
         mastodon.stream_user(listener=StreamListenerWeather(mastodon))
     except KeyboardInterrupt:
         print("Interrupção recebida, saindo...")
-        mastodon.account_update_credentials(note= os.getenv('MASTODON_BIO_OFFLINE') )
+        mastodon.account_update_credentials(note=os.getenv("MASTODON_BIO_OFFLINE"))
         print("O bot foi encerrado com sucesso.")
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()
