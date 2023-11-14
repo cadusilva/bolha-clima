@@ -39,6 +39,33 @@ A resposta será algo assim:
 Clima atual em Recife, BR: faz 27.02 °C com nuvens dispersas e umidade do ar em 83%.
 ```
 
+## Serviço do `systemd`
+
+Para rodar o bot como um serviço do sistema, use o seguinte exemplo:
+
+```
+[Unit]
+Description=Bot Bolha Clima
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=on-failure
+User=nobody
+WorkingDirectory=/opt/clima
+ExecStart=/usr/bin/python3 /opt/clima/under_the_weather.py
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar. Salve o arquivo na pasta `/etc/systemd/system` com um nome tipo `clima.service`. Para executar o serviço e iniciar ele com o sistema, execute:
+
+```
+# systemctl daemon-reload
+# systemctl enable --now clima
+```
+
 ## Origem
 
 O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather).
