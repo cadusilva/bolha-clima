@@ -39,7 +39,7 @@ A resposta será algo assim:
 O clima atual em Recife, BR é esse: faz 30 °C com sensação
 térmica de 34 °C, nuvens dispersas e umidade do ar em 66%.
 ```
-Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de problemas.
+Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
 ## Serviço do `systemd`
 
