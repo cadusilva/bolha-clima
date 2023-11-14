@@ -12,12 +12,12 @@ Clone o repositório e instale as dependências:
 pip3 install mastodon.py python-dotenv
 ```
 
-Agora edite o arquivo `.env`. Veja o que cada linha significa:
+Crie uma conta em alguma instância do Mastodon para o bot e edite o arquivo `.env`. Veja o que cada linha significa:
 
-- `OWM_API`: API do OpenWeatherMaps. Você pode [usar a sua](https://home.openweathermap.org/api_keys) ou deixar a API do tier gratuito já inclusa para experimentar.
-- `OWM_LANG`: idioma das mensagens retornadas pelo OpenWeatherMaps, como "céu limpo" ou "nuvem espaçadas".
+- `OWM_API`: API do OpenWeatherMap. Você pode [usar a sua](https://home.openweathermap.org/api_keys) ou deixar a API do tier gratuito já inclusa para experimentar.
+- `OWM_LANG`: idioma das mensagens retornadas pelo OpenWeatherMap, como "céu limpo", "nublado" ou "nuvem espaçadas".
 - `MASTODON_TOKEN`: token que permite o acesso do robozinho na conta onde ele será usado. Você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3.
-- `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho. Exemplo: `https://bolha.one`
+- `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Exemplo: `https://bolha.one`
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 
@@ -36,7 +36,7 @@ Agora basta falar com o bot. Exemplo:
 A resposta será algo assim:
 
 ```
-Clima atual em Recife, BR: faz 27.02 °C com nuvens dispersas e umidade do ar em 83%.
+O clima atual em Recife, BR é esse: faz 30 °C com sensação térmica de 34 °C, nuvens dispersas e umidade do ar em 66%.
 ```
 
 ## Serviço do `systemd`
@@ -59,7 +59,7 @@ ExecStart=/usr/bin/python3 /opt/clima/under_the_weather.py
 WantedBy=multi-user.target
 ```
 
-Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar. Salve o arquivo na pasta `/etc/systemd/system` com um nome tipo `clima.service`. Para executar o serviço e iniciar ele com o sistema, execute:
+Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Salve o arquivo na pasta `/etc/systemd/system` com um nome tipo `clima.service`. Para executar o serviço e iniciar ele com o sistema, execute:
 
 ```
 # systemctl daemon-reload
