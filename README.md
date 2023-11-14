@@ -2,7 +2,7 @@
 
 O **Bolha Clima** é um robozinho do Mastodon que responde com o clima atual para a cidade informada. Basta citar o bot com o nome da cidade que deseja saber a temperatura, como está o céu e a umidade do ar.
 
-Você pode experimentar em: https://bolha.one/clima
+Você pode experimentar em: https://bolha.one/@clima
 
 ## Como utilizar
 
@@ -44,23 +44,25 @@ O clima atual em Recife, BR é esse: faz 30 °C com sensação térmica de 34 °
 Para rodar o bot como um serviço do sistema, use o seguinte exemplo:
 
 ```
+cat << EOF > /etc/systemd/system/clima.service
 [Unit]
 Description=Bot Bolha Clima
 After=network-online.target
 
 [Service]
 Type=simple
+Environment="PYTHONUNBUFFERED=1"
 Restart=on-failure
 User=nobody
 WorkingDirectory=/opt/clima
 ExecStart=/usr/bin/python3 /opt/clima/under_the_weather.py
-Environment=PYTHONUNBUFFERED=1
 
 [Install]
 WantedBy=multi-user.target
+EOF
 ```
 
-Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Salve o arquivo na pasta `/etc/systemd/system` com um nome tipo `clima.service`. Para executar o serviço e iniciar ele com o sistema, execute:
+Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Para executar o serviço e iniciar ele com o sistema, execute:
 
 ```
 # systemctl daemon-reload
