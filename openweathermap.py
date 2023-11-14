@@ -38,9 +38,11 @@ def try_city(city_name, apiKey):
     weather = json_data.get("weather")[0].get("description")
     temp = json_data.get("main").get("temp")
     i_temp = math.floor(temp)
+    feels_like = json_data.get("main").get("feels_like")
+    i_feels_like = math.floor(feels_like)
     humidity = json_data.get("main").get("humidity")
 
-    return f"o clima atual em {city}, {country} é esse: faz {i_temp} \xb0C com {weather} e umidade do ar em {humidity}%."
+    return f"o clima atual em {city}, {country} é esse: faz {i_temp} \xb0C com sensação térmica de {i_feels_like} \xb0C, {weather} e umidade do ar em {humidity}%."
 
 
 if __name__ == "__main__":
