@@ -1,8 +1,10 @@
 # Bolha Clima
 
-O **Bolha Clima** é um robozinho do Mastodon escrito em Python que responde com o clima atual para a cidade informada. Basta citar o bot com o nome da cidade que deseja saber a temperatura, como está o céu e a umidade do ar.
+O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde com o clima atual para a cidade informada. Basta citar o bot mencionando somente o nome da cidade que deseja saber a temperatura, sensação térmica, como está o céu e a umidade do ar.
 
-Você pode experimentar em: https://bolha.one/@clima
+Os dados são fornecidos pelo **OpenWeatherMap** e o bot inclui uma chave de API do plano gratuito deles (você pode especificar a sua no arquivo `.env`).
+
+Experimente bot em funcionamento aqui: https://bolha.one/@clima
 
 ## Como utilizar
 
@@ -36,8 +38,11 @@ Agora basta falar com o bot. Exemplo:
 A resposta será algo assim:
 
 ```
-O clima atual em Recife, BR é esse: faz 30 °C com sensação
-térmica de 34 °C, nuvens dispersas e umidade do ar em 66%.
+clima atual em Recife, BR:
+- Temperatura: 27.0 °C
+- Sensação térmica: 29.6 °C
+- Céu agora: algumas nuvens
+- Umidade do ar: 78%.
 ```
 Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
