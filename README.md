@@ -73,4 +73,4 @@ Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em ou
 
 ## Origem
 
-O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather).
+O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather). O autor original não planeja mais dar continuidade ao projeto, mas ele seguirá vivo através deste repositório.
