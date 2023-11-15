@@ -66,13 +66,20 @@ class StreamListenerWeather(StreamListener):
             return
 
         print("A mensagem é: " + content)
-        # example content (line break added for readability):
+        # Valid example content (line break added for readability):
         # <p><a href="https://bolha.one/@cadusilva" class="u-url mention" rel="nofollow noopener noreferrer" target="_blank">@cadusilva</a>
         # <span> </span>
         # <a href="https://bolha.one/@clima" class="u-url mention" rel="nofollow noopener noreferrer" target="_blank">@clima</a>
         # <span> São Paulo</span></p>
+        #
+        # Invalid example content (line break added for readability):
+        # <p><span class="h-card">
+        # <a href="https://bolha.one/@clima" class="u-url mention" rel="nofollow noopener noreferrer" target="_blank">@
+        # <span>clima</span></a>
+        # </span> </p>
+        # <p>Como ta o clima em viçosa?</p>
 
-        content = etree.XML(content).xpath("string()")
+        content = etree.XML(f"<div>{content}</div>").xpath("string()")
 
         msg = " ".join((w for w in content.split() if not w.startswith("@")))
 
