@@ -2,3 +2,5 @@ __pycache__
 mastodon_credentials 
 mastodon_credential.secret 
 undertheweather.secret
+openweather_apikey.secret
+.env

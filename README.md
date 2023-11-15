@@ -12,7 +12,7 @@ Clone o repositório e instale as dependências:
 pip3 install mastodon.py python-dotenv
 ```
 
-Crie uma conta em alguma instância do Mastodon para o bot e edite o arquivo `.env`. Veja o que cada linha significa:
+Crie uma conta em alguma instância do Mastodon para o bot, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
 - `OWM_API`: API do OpenWeatherMap. Você pode [usar a sua](https://home.openweathermap.org/api_keys) ou deixar a API do tier gratuito já inclusa para experimentar.
 - `OWM_LANG`: idioma das mensagens retornadas pelo OpenWeatherMap, como "céu limpo", "nublado" ou "nuvem espaçadas".
