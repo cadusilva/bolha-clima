@@ -4,7 +4,7 @@ O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde c
 
 Os dados são fornecidos pelo **OpenWeatherMap** e o bot inclui uma chave de API do plano gratuito deles (você pode especificar a sua no arquivo `.env`).
 
-Experimente bot em funcionamento aqui: https://bolha.one/@clima
+Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
 ## Como utilizar
 
