@@ -65,6 +65,8 @@ class StreamListenerWeather(StreamListener):
             print("O status estava vazio.")
             return
 
+        visibility = status.get("visibility")
+
         content = status.get("content")
         if content is None:
             print("O conteúdo estava vazio.")
@@ -92,6 +94,7 @@ class StreamListenerWeather(StreamListener):
             self.mastodon.status_post(
                 f"@{acct} qual é? Qual foi? Por que é que tu tá nessa?",
                 in_reply_to_id=status,
+                visibility=visibility,
             )
             return
 
@@ -108,34 +111,41 @@ class StreamListenerWeather(StreamListener):
 
         if isinstance(report, str):
             print(report)
-            self.mastodon.status_post(f"Oi @{acct}, {report}", in_reply_to_id=status)
+            self.mastodon.status_post(
+                f"Oi @{acct}, {report}", in_reply_to_id=status, visibility=visibility
+            )
         else:
             print(f"Erro {report}")
             if report == 400:
                 self.mastodon.status_post(
                     f"Foi mal @{acct}, não entendi sua mensagem :(",
                     in_reply_to_id=status,
+                    visibility=visibility,
                 )
             elif report == 401:
                 self.mastodon.status_post(
                     f"Foi mal @{acct}, não estou conseguindo saber o clima. Pode dar uma ajuda aqui, @cadu@bolha.one ?",
                     in_reply_to_id=status,
+                    visibility=visibility,
                 )
             elif report == 404:
                 self.mastodon.status_post(
                     f"Foi mal @{acct}, não encontrei a cidade mencionada :(",
                     in_reply_to_id=status,
+                    visibility=visibility,
                 )
             elif report == 429:
                 self.mastodon.status_post(
                     f"Foi mal @{acct}, estou sobrecarregado. Pergunte mais tarde, ok? ;)",
                     in_reply_to_id=status,
+                    visibility=visibility,
                 )
             else:
                 self.mastodon.status_post(
                     f"Parece que você encontrou uma falha, @{acct} ! "
                     f"@cadu@bolha.one e @nandavereda@ayom.media tentarão resolver ;)",
                     in_reply_to_id=status,
+                    visibility=visibility,
                 )
 
 
