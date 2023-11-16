@@ -93,6 +93,7 @@ Restart=on-failure
 User=nobody
 WorkingDirectory=/opt/clima
 ExecStart=/usr/bin/python3 /opt/clima/under_the_weather.py
+KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target
