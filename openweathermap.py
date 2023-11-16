@@ -49,7 +49,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
         return exc.code
 
     city        = json_data.get("resolvedAddress")
-    weather     = json_data.get("currentConditions").get("conditions")
+    weather     = json_data.get("currentConditions").get("conditions").lower()
     temp        = json_data.get("currentConditions").get("temp")
     feelslike   = json_data.get("currentConditions").get("feelslike")
     humidity    = json_data.get("currentConditions").get("humidity")
