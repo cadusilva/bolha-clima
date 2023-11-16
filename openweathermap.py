@@ -71,6 +71,6 @@ if __name__ == "__main__":
     print(
         try_city(
             sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CITY,
-            os.getenv("OWM_API"),
+            os.getenv("WTH_API"),
         )
     )
