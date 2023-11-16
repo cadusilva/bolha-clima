@@ -1,8 +1,15 @@
 # Bolha Clima
 
-O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde com o clima atual para a cidade informada. Basta citar o bot mencionando somente o nome da cidade que deseja saber a temperatura, sensação térmica, como está o céu e a umidade do ar.
+O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde com o clima atual para a cidade informada. Uma vez instalado, basta você citar o bot mencionando somente o nome da cidade e receberá como resposta:
 
-Os dados são fornecidos pelo **OpenWeatherMap** e o bot inclui uma chave de API do plano gratuito deles (você pode especificar a sua no arquivo `.env`).
+- a temperatura
+- a sensação térmica
+- o índice UV
+- como está o céu, se está encoberto
+- a umidade do ar
+- as chances de chover
+
+Os dados são fornecidos pelo serviço **VisualCrossing** com base em estações meteorológicas de aeroportos. Você precisa [obter uma chave de API](https://www.visualcrossing.com/sign-up), que é gratuita e permite 1.000 consultas por dia.
 
 Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
@@ -11,14 +18,15 @@ Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 Clone o repositório e instale as dependências:
 
 ```
+git clone https://github.com/cadusilva/bolha-clima.git
 pip3 install mastodon.py python-dotenv
 ```
 
-Crie uma conta em alguma instância do Mastodon para o bot, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
+Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
-- `OWM_API`: API do OpenWeatherMap. Você pode [usar a sua](https://home.openweathermap.org/api_keys) ou deixar a API do tier gratuito já inclusa para experimentar.
-- `OWM_LANG`: idioma das mensagens retornadas pelo OpenWeatherMap, como "céu limpo", "nublado" ou "nuvem espaçadas".
-- `MASTODON_TOKEN`: token que permite o acesso do robozinho na conta onde ele será usado. Você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3.
+- `WTH_API`: API obtida no serviço VisualCrossing.
+- `WTH_LANG`: idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo", "nublado" ou "nuvem espaçadas".
+- `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3.
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Exemplo: `https://bolha.one`
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
@@ -29,22 +37,34 @@ Para executar o bot, digite:
 python3 under_the_weather.py
 ```
 
-Agora basta falar com o bot. Exemplo:
+Agora basta falar com ele. Exemplo:
 
 ```
-@clima@bolha.one Recife
+@bot@instancia.xyz Recife
 ```
 
 A resposta será algo assim:
 
 ```
-clima atual em Recife, BR:
+clima em Recife, PE, Brasil às 23h:
 - Temperatura: 27.0 °C
-- Sensação térmica: 29.6 °C
-- Céu agora: algumas nuvens
-- Umidade do ar: 78%.
+- Sensação térmica: 29.5 °C
+- Índice UV: 0/10
+- Céu agora: Parcialmente nublado, 50% encoberto
+- Umidade do ar: ~79%
+- Chances de chover: ~0%
 ```
 Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
+
+## Usando sem robô
+
+Você também pode consultar o clima atual de qualquer cidade sem depender de um bot. Basta usar o seguinte comando:
+
+```
+python3 openweathermap.py "Nome da Cidade"
+```
+
+Se o nome for simples, como `Recife`, não precisa de aspas. Mas se for composto, como `Rio de Janeiro`, use as aspas. O script então retornará as informações do jeito que ele postaria no perfil do robô, conforme exemplo acima.
 
 ## Serviço do `systemd`
 
@@ -76,6 +96,13 @@ Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em ou
 # systemctl enable --now clima
 ```
 
-## Origem
+Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de funcionamento:
+
+```
+systemctl status clima
+journalctl -u clima
+```
+
+## Créditos
 
 O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather). O autor original não planeja dar continuidade ao projeto, mas ele seguirá vivo neste repositório.
