@@ -58,7 +58,7 @@ Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusil
 
 ## Usando sem robô
 
-Você também pode consultar o clima atual de qualquer cidade sem depender de um bot. Basta usar o seguinte comando:
+Você também pode consultar o clima atual de qualquer cidade sem precisar instalar o bot em uma instância. Basta usar o seguinte comando:
 
 ```
 python3 openweathermap.py "Nome da Cidade"
