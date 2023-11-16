@@ -27,18 +27,18 @@ import urllib.request
 
 from dotenv import load_dotenv
 
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q="
+BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
 
 
-def try_city(city_name, api_key: str, lang="pt_br") -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "&mode=json&units=metric&lang="
+        + "?unitGroup=metric&include=current&lang="
         + lang
-        + "&APPID="
+        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob&key="
         + api_key
     )
 
@@ -48,17 +48,22 @@ def try_city(city_name, api_key: str, lang="pt_br") -> typing.Union[str, int]:
     except urllib.request.HTTPError as exc:
         return exc.code
 
-    city = json_data.get("name")
-    country = json_data.get("sys").get("country")
-    weather = json_data.get("weather")[0].get("description")
-    temp = json_data.get("main").get("temp")
-    i_temp = "{:.1f}".format(temp)
-    feels_like = json_data.get("main").get("feels_like")
-    i_feels_like = "{:.1f}".format(feels_like)
-    humidity = json_data.get("main").get("humidity")
+    city        = json_data.get("resolvedAddress")
+    weather     = json_data.get("currentConditions").get("conditions")
+    temp        = json_data.get("currentConditions").get("temp")
+    feelslike   = json_data.get("currentConditions").get("feelslike")
+    humidity    = json_data.get("currentConditions").get("humidity")
+    uvindex     = json_data.get("currentConditions").get("uvindex")
+    time        = json_data.get("currentConditions").get("datetime")[:2]
+    rain        = json_data.get("currentConditions").get("precipprob")
+    clouds      = json_data.get("currentConditions").get("cloudcover")
 
-    return f"clima atual em {city}, {country}:\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feels_like} \xb0C\n:ceu: Céu agora: {weather}\n:umidade: Umidade do ar: {humidity}%"
+    i_humidity  = "{:.0f}".format(humidity)
+    i_uvindex   = "{:.0f}".format(uvindex)
+    i_rain      = "{:.0f}".format(rain)
+    i_clouds    = "{:.0f}".format(clouds)
 
+    return f"clima em {city} às {time}h:\n:temp: Temperatura: {temp} \xb0C\n:s_termica: Sensação térmica: {feelslike} \xb0C\n:sunny: Índice UV: {i_uvindex}/10\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
