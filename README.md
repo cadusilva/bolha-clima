@@ -88,12 +88,13 @@ After=network-online.target
 
 [Service]
 Type=simple
-Environment="PYTHONUNBUFFERED=1"
-Restart=on-failure
 User=nobody
+Restart=on-failure
+RestartSec=1 
 WorkingDirectory=/opt/clima
 ExecStart=/usr/bin/python3 /opt/clima/under_the_weather.py
 KillSignal=SIGINT
+Environment="PYTHONUNBUFFERED=1"
 
 [Install]
 WantedBy=multi-user.target
