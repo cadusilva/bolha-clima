@@ -19,7 +19,8 @@ Clone o repositório e instale as dependências:
 
 ```
 git clone https://github.com/cadusilva/bolha-clima.git
-pip3 install mastodon.py python-dotenv
+pip3 install lxml mastodon.py python-dotenv spacy
+python3 -m spacy download pt_core_news_md
 ```
 
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
@@ -30,6 +31,7 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Exemplo: `https://bolha.one`
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
+- `UTW_NER_MODEL`: nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/)
 
 Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
@@ -42,7 +44,7 @@ python3 under_the_weather.py
 Agora basta falar com ele. Exemplo:
 
 ```
-@climabot@instancia.xyz Recife
+Diz aí, @climabot@instancia.xyz, como está o clima no Recife?
 ```
 
 A resposta será algo assim:

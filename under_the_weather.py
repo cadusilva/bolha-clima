@@ -19,9 +19,12 @@
 """
 
 import os
+
+from dotenv import load_dotenv
 from lxml import etree
 from mastodon import Mastodon, StreamListener
-from dotenv import load_dotenv
+import spacy
+
 from openweathermap import try_city
 
 
@@ -30,6 +33,7 @@ class StreamListenerWeather(StreamListener):
         self.apikey = os.getenv("WTH_API")
         self.lang = os.getenv("WTH_LANG")
         self.mastodon = mastodon
+        self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
         super().__init__()
 
     def on_update(self, status):
@@ -89,6 +93,12 @@ class StreamListenerWeather(StreamListener):
                 in_reply_to_id=status,
             )
             return
+
+        # Perform NER to extract city names from complete sentences
+        places = [e for e in self.nlp(msg).ents if e.label_ == "LOC"]
+        if places:
+            print("Localidades:", places)
+            msg = ", ".join((str(p) for p in places))
 
         print("TENTANDO: " + msg)
         report = try_city(msg, self.apikey, self.lang)
