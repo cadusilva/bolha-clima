@@ -63,7 +63,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     i_rain      = "{:.0f}".format(rain)
     i_clouds    = "{:.0f}".format(clouds)
 
-    return f"clima em {city} às {time}h:\n:temp: Temperatura: {temp} \xb0C\n:s_termica: Sensação térmica: {feelslike} \xb0C\n:sunny: Índice UV: {i_uvindex}/10\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n\n#clima #BolhaClima"
+    return f"esse é o clima em {city} às {time}h:\n:temp: Temperatura: {temp} \xb0C\n:s_termica: Sensação térmica: {feelslike} \xb0C\n:sunny: Índice UV: {i_uvindex}/10\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n\n#clima #BolhaClima"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
