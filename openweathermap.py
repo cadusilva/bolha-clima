@@ -57,7 +57,7 @@ def try_city(city_name, api_key: str, lang="pt_br") -> typing.Union[str, int]:
     i_feels_like = "{:.1f}".format(feels_like)
     humidity = json_data.get("main").get("humidity")
 
-    return f"clima atual em {city}, {country}:\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feels_like} \xb0C\n:ceu: Céu agora: {weather}\n:umidade: Umidade do ar: {humidity}%."
+    return f"clima atual em {city}, {country}:\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feels_like} \xb0C\n:ceu: Céu agora: {weather}\n:umidade: Umidade do ar: {humidity}%"
 
 
 if __name__ == "__main__":
