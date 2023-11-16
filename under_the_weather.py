@@ -34,6 +34,7 @@ class StreamListenerWeather(StreamListener):
         self.lang = os.getenv("WTH_LANG")
         self.mastodon = mastodon
         self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
+        self.false_loc = ("legal",)
         super().__init__()
 
     def on_update(self, status):
@@ -98,7 +99,9 @@ class StreamListenerWeather(StreamListener):
         places = [e for e in self.nlp(msg).ents if e.label_ == "LOC"]
         if places:
             print("Localidades:", places)
-            msg = ", ".join((str(p) for p in places))
+            msg = ", ".join(
+                s for s in (str(p) for p in places) if s.lower() not in self.false_loc
+            )
 
         print("TENTANDO: " + msg)
         report = try_city(msg, self.apikey, self.lang)
