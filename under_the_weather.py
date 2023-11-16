@@ -66,6 +66,8 @@ class StreamListenerWeather(StreamListener):
             return
 
         visibility = status.get("visibility")
+        if visibility == "public":
+            visibility = "unlisted"
 
         content = status.get("content")
         if content is None:
