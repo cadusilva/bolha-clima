@@ -88,7 +88,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-User=nobody
+DynamicUser=yes
 Restart=on-failure
 RestartSec=1 
 WorkingDirectory=/opt/clima
