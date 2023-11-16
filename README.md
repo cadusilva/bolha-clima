@@ -31,6 +31,8 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 
+Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
+
 Para executar o bot, digite:
 
 ```
@@ -40,7 +42,7 @@ python3 under_the_weather.py
 Agora basta falar com ele. Exemplo:
 
 ```
-@bot@instancia.xyz Recife
+@climabot@instancia.xyz Recife
 ```
 
 A resposta será algo assim:
@@ -54,7 +56,15 @@ clima em Recife, PE, Brasil às 23h:
 - Umidade do ar: ~79%
 - Chances de chover: ~0%
 ```
-Lembre-se apenas de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
+
+Caso o nome da cidade informada seja o mesmo em diferentes estados, você pode especificar a `UF` do estado desejado para ter o resultado esperado. Exemplo:
+
+```
+@climabot@instancia.xyz Ipapeva, MG
+@climabot@instancia.xyz Ipapeva, SP
+```
+
+O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso ele retorne o município errado, você pode especificar o estado onde fica o município esperado. Para ter respostas mais precisas, prefira sempre especificar na consulta a UF do estado onde fica a cidade desejada.
 
 ## Usando sem robô
 
@@ -106,3 +116,5 @@ journalctl -u clima
 ## Créditos
 
 O **Bolha Clima** é baseado no [UnderTheWeather](https://github.com/ninedotnine/under_the_weather), abandonado desde 2018, mas ressuscitado e atualizado por [Fernanda Queiroz](https://github.com/nandavereda/under_the_weather). O autor original não planeja dar continuidade ao projeto, mas ele seguirá vivo neste repositório.
+
+O bot está licenciado sob a AGPL. Vide arquivo `LICENSE` para conhecer o conteúdo da licença na íntegra.
