@@ -27,8 +27,8 @@ from openweathermap import try_city
 
 class StreamListenerWeather(StreamListener):
     def __init__(self, mastodon: Mastodon):
-        self.apikey = os.getenv("OWM_API")
-        self.lang = os.getenv("OWM_LANG")
+        self.apikey = os.getenv("WTH_API")
+        self.lang = os.getenv("WTH_LANG")
         self.mastodon = mastodon
         super().__init__()
 
@@ -115,7 +115,7 @@ class StreamListenerWeather(StreamListener):
                 )
             elif report == 429:
                 self.mastodon.status_post(
-                    f"Foi mal @{acct}, estou sobrecarregada. Pergunte mais tarde, ok? ;)",
+                    f"Foi mal @{acct}, estou sobrecarregado. Pergunte mais tarde, ok? ;)",
                     in_reply_to_id=status,
                 )
             else:
