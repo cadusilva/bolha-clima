@@ -37,7 +37,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "/?unitGroup=metric&include=current&maxStations=1&lang="
+        + "/?unitGroup=metric&include=current&lang="
         + lang
         + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob&key="
         + api_key
