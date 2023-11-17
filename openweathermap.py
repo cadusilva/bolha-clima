@@ -39,7 +39,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
         + urllib.parse.quote(city_name)
         + "/?unitGroup=metric&include=current&lang="
         + lang
-        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob&key="
+        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob,windspeed,sunrise,sunset,timezone&key="
         + api_key
     )
 
@@ -50,6 +50,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
         return exc.code
 
     city        = json_data.get("resolvedAddress")
+    tz          = json_data.get("timezone")
     weather     = json_data.get("currentConditions").get("conditions").lower()
     temp        = json_data.get("currentConditions").get("temp")
     feelslike   = json_data.get("currentConditions").get("feelslike")
@@ -57,7 +58,10 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     uvindex     = json_data.get("currentConditions").get("uvindex")
     rain        = json_data.get("currentConditions").get("precipprob")
     clouds      = json_data.get("currentConditions").get("cloudcover")
-    time        = json_data.get("currentConditions").get("datetime")[:2]
+    time        = json_data.get("currentConditions").get("datetime")[:5]
+    wind        = json_data.get("currentConditions").get("windspeed")
+    sunrise     = json_data.get("currentConditions").get("sunrise")[:5]
+    sunset      = json_data.get("currentConditions").get("sunset")[:5]
 
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
@@ -66,7 +70,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     i_rain      = "{:.0f}".format(rain)
     i_clouds    = "{:.0f}".format(clouds)
 
-    return f"esse é o clima em {city} às {time}h:\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n\n#clima #BolhaClima"
+    return f"esse é o clima em {city} às {time}\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n\nInformações adicionais:\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n:nascerSol: Nascer do sol: {sunrise}\n:porSol: Pôr do sol: {sunset}\n:vento: Velocidade do vento: {wind} km/h\n\U0001f551 Fuso horário: {tz}\n\n#clima #BolhaClima"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
