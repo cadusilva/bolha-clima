@@ -17,7 +17,7 @@ Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
 Clone o repositório e instale as dependências:
 
-```
+```bash
 git clone https://github.com/cadusilva/bolha-clima.git
 pip3 install lxml mastodon.py python-dotenv spacy
 python3 -m spacy download pt_core_news_md
@@ -37,7 +37,7 @@ Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolh
 
 Para executar o bot, digite:
 
-```
+```python
 python3 under_the_weather.py
 ```
 
@@ -77,7 +77,7 @@ O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso
 
 Você também pode consultar o clima atual de qualquer cidade sem precisar instalar o bot em uma instância. Basta usar o seguinte comando:
 
-```
+```python
 python3 openweathermap.py "Nome da Cidade"
 ```
 
@@ -87,7 +87,7 @@ Se o nome for simples, como `Recife`, não precisa de aspas. Mas se for composto
 
 Para rodar o bot como um serviço do sistema, use o seguinte exemplo:
 
-```
+```ini
 cat << EOF > /etc/systemd/system/clima.service
 [Unit]
 Description=Bot Bolha Clima
@@ -110,14 +110,14 @@ EOF
 
 Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Para iniciar o serviço e fazer ele carregar junto com o sistema, execute:
 
-```
+```bash
 # systemctl daemon-reload
 # systemctl enable --now clima
 ```
 
 Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de funcionamento:
 
-```
+```bash
 systemctl status clima
 journalctl -u clima
 ```
