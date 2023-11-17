@@ -26,6 +26,7 @@ import urllib.parse
 import urllib.request
 
 from dotenv import load_dotenv
+from decimal import Decimal
 
 BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
 
@@ -54,16 +55,18 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     feelslike   = json_data.get("currentConditions").get("feelslike")
     humidity    = json_data.get("currentConditions").get("humidity")
     uvindex     = json_data.get("currentConditions").get("uvindex")
-    time        = json_data.get("currentConditions").get("datetime")[:2]
     rain        = json_data.get("currentConditions").get("precipprob")
     clouds      = json_data.get("currentConditions").get("cloudcover")
+    time        = json_data.get("currentConditions").get("datetime")[:2]
 
+    i_temp      = round(Decimal(temp))
+    i_feelslike = round(Decimal(feelslike))
     i_humidity  = "{:.0f}".format(humidity)
     i_uvindex   = "{:.0f}".format(uvindex)
     i_rain      = "{:.0f}".format(rain)
     i_clouds    = "{:.0f}".format(clouds)
 
-    return f"esse é o clima em {city} às {time}h:\n:temp: Temperatura: {temp} \xb0C\n:s_termica: Sensação térmica: {feelslike} \xb0C\n:sunny: Índice UV: {i_uvindex}/10\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n\n#clima #BolhaClima"
+    return f"esse é o clima em {city} às {time}h:\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {i_uvindex}/10\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n\n#clima #BolhaClima"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
