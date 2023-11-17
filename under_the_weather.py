@@ -94,7 +94,7 @@ class StreamListenerWeather(StreamListener):
 
         if not msg:
             self.mastodon.status_post(
-                f"@{acct} qual é? Qual foi? Por que é que tu tá nessa?",
+                f"@{acct} quer me dizer alguma coisa?",
                 in_reply_to_id=status,
                 visibility=visibility,
             )
