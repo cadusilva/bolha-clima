@@ -111,8 +111,8 @@ EOF
 Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Para iniciar o serviço e fazer ele carregar junto com o sistema, execute:
 
 ```bash
-# systemctl daemon-reload
-# systemctl enable --now clima
+systemctl daemon-reload
+systemctl enable --now clima
 ```
 
 Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de funcionamento:
