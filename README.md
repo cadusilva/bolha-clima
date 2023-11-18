@@ -50,18 +50,16 @@ Diz aí, @climabot@instancia.xyz, como está o clima no Recife?
 A resposta será algo assim:
 
 ```
-esse é o clima em Recife, PE, Brasil às 14:00
-- Temperatura: 30 °C
-- Sensação térmica: 32 °C
-- Céu agora: parcialmente nublado, 50% encoberto
+Esse é o clima em Recife, PE, Brasil às 19:00 (horário local):
 
-Informações adicionais:
-- Índice UV: 6/10
-- Umidade do ar: ~59%
-- Chances de chover: ~0%
-- Nascer do sol: 04:49
-- Pôr do sol: 17:19
-- Velocidade do vento: 16.6 km/h
+:temp: Temperatura: 28 °C
+:s_termica: Sensação térmica: 31 °C
+:ceu: Céu agora: parcialmente nublado, 50% encoberto
+:sunny: Índice UV: 0/10
+:umidade: Umidade do ar: ~74%
+:rain: Chances de chover hoje: ~100%
+
+📆 Para amanhã poderemos ter máxima de 30 °C, mínima de 27 °C e sensação de até 34 °C com céu parcialmente nublado ao longo do dia com uma chance de chuva ao longo do dia. Há 10% de chances de clima severo.
 ```
 
 Caso o nome da cidade informada seja o mesmo em diferentes estados, você pode especificar a `UF` do estado desejado para ter o resultado esperado. Exemplo:
