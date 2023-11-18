@@ -81,7 +81,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     i_feelslike_a   = round(Decimal(feelslike_a))
     i_severo        = round(Decimal(severo))
 
-    return f"Esse é o clima em {city} às {time} (horário local)\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover hoje: ~{i_rain}%\n\n\U0001f4c6 Para amanhã poderemos ter máxima de {i_temp_max} \xb0C, mínima de {i_temp_min} \xb0C e sensação de até {i_feelslike_a} \xb0C com céu {descricao} Há {i_severo}% de chances de clima severo.\n\n#clima #BolhaClima"
+    return f"Esse é o clima em {city} às {time} (horário local):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover hoje: ~{i_rain}%\n\n\U0001f4c6 Para amanhã poderemos ter máxima de {i_temp_max} \xb0C, mínima de {i_temp_min} \xb0C e sensação de até {i_feelslike_a} \xb0C com céu {descricao} Há {i_severo}% de chances de clima severo.\n\n#clima #BolhaClima"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
