@@ -114,7 +114,7 @@ class StreamListenerWeather(StreamListener):
         if isinstance(report, str):
             print(report)
             self.mastodon.status_post(
-                f"Oi @{acct}, {report}", in_reply_to_id=status, visibility=visibility
+                f"Oi @{acct}!\n\n{report}", in_reply_to_id=status, visibility=visibility
             )
         else:
             print(f"Erro {report}")

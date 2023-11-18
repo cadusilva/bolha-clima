@@ -39,7 +39,7 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
         + urllib.parse.quote(city_name)
         + "/?unitGroup=metric&include=current&lang="
         + lang
-        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob,windspeed,sunrise,sunset&key="
+        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,precipprob,description,tempmax,tempmin,feelslikemax,severerisk&key="
         + api_key
     )
 
@@ -49,19 +49,25 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     except urllib.request.HTTPError as exc:
         return exc.code
 
+    # hoje
     city        = json_data.get("resolvedAddress")
     weather     = json_data.get("currentConditions").get("conditions").lower()
     temp        = json_data.get("currentConditions").get("temp")
     feelslike   = json_data.get("currentConditions").get("feelslike")
     humidity    = json_data.get("currentConditions").get("humidity")
     uvindex     = json_data.get("currentConditions").get("uvindex")
-    rain        = json_data.get("currentConditions").get("precipprob")
+    rain        = json_data.get("days")[0].get("precipprob")
     clouds      = json_data.get("currentConditions").get("cloudcover")
     time        = json_data.get("currentConditions").get("datetime")[:5]
-    wind        = json_data.get("currentConditions").get("windspeed")
-    sunrise     = json_data.get("currentConditions").get("sunrise")[:5]
-    sunset      = json_data.get("currentConditions").get("sunset")[:5]
 
+    # amanhã
+    temp_max    = json_data.get("days")[0].get("tempmax")
+    temp_min    = json_data.get("days")[0].get("tempmin")
+    feelslike_a = json_data.get("days")[0].get("feelslikemax")
+    descricao   = json_data.get("days")[0].get("description").lower()
+    severo      = json_data.get("days")[0].get("severerisk")
+
+    # hoje
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
     i_humidity  = "{:.0f}".format(humidity)
@@ -69,7 +75,13 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     i_rain      = "{:.0f}".format(rain)
     i_clouds    = "{:.0f}".format(clouds)
 
-    return f"esse é o clima em {city} às {time}\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n\nInformações adicionais:\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover: ~{i_rain}%\n:nascerSol: Nascer do sol: {sunrise}\n:porSol: Pôr do sol: {sunset}\n:vento: Velocidade do vento: {wind} km/h\n\n#clima #BolhaClima"
+    # amanhã
+    i_temp_max      = round(Decimal(temp_max))
+    i_temp_min      = round(Decimal(temp_min))
+    i_feelslike_a   = round(Decimal(feelslike_a))
+    i_severo        = round(Decimal(severo))
+
+    return f"Esse é o clima em {city} às {time} (horário local)\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex}/10\n:umidade: Umidade do ar: ~{i_humidity}%\n:rain: Chances de chover hoje: ~{i_rain}%\n\n\U0001f4c6 Para amanhã poderemos ter máxima de {i_temp_max} \xb0C, mínima de {i_temp_min} \xb0C e sensação de até {i_feelslike_a} \xb0C com céu {descricao} Há {i_severo}% de chances de clima severo.\n\n#clima #BolhaClima"
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"
