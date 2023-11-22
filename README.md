@@ -33,6 +33,7 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 - `UTW_NER_MODEL`: nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/)
+- `MAINTENANCE_STATUS`: se definido, ativa modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
 
 Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
@@ -119,6 +120,12 @@ Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de fu
 systemctl status clima
 journalctl -u clima
 ```
+
+## Modo de Manutenção
+
+Neste modo o robô não consulta a API e simplesmente responde com uma
+mensagem personalizada de que está indisponível no momento ou outra
+razão.
 
 ## Créditos
 

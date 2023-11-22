@@ -35,6 +35,7 @@ class StreamListenerWeather(StreamListener):
         self.mastodon = mastodon
         self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
         self.false_loc = ("legal",)
+        self.maintenance = os.getenv("MAINTENANCE_STATUS")
         super().__init__()
 
     def on_update(self, status):
@@ -107,6 +108,12 @@ class StreamListenerWeather(StreamListener):
             msg = ", ".join(
                 s for s in (str(p) for p in places) if s.lower() not in self.false_loc
             )
+
+        if self.maintenance:
+            self.mastodon.status_post(
+                self.maintenance.format(f"@{acct}"), in_reply_to_id=status, visibility=visibility
+            )
+            return
 
         print("TENTANDO: " + msg)
         report = try_city(msg, self.apikey, self.lang)
