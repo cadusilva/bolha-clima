@@ -48,7 +48,7 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     )
 
     try:
-        json_data = executor.submit(_read_json, (full_api_url,)).result(timeout=timeout)
+        json_data = executor.submit(_read_json, full_api_url).result(timeout=timeout)
     except urllib.request.HTTPError as exc:
         return exc.code
     except concurrent.futures.TimeoutError:
