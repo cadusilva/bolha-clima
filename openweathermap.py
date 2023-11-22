@@ -18,7 +18,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 """
 
+import concurrent.futures
 import json
+import logging
 import os
 import sys
 import typing
@@ -29,9 +31,11 @@ from dotenv import load_dotenv
 from decimal import Decimal
 
 BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
+executor = concurrent.futures.ThreadPoolExecutor()
+logger = logging.getLogger(__name__)
 
 
-def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
@@ -44,10 +48,14 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     )
 
     try:
-        with urllib.request.urlopen(full_api_url) as url:
-            json_data = json.loads(url.read().decode("utf-8"))
+        json_data = executor.submit(_read_json, (full_api_url,)).result(timeout=timeout)
     except urllib.request.HTTPError as exc:
         return exc.code
+    except concurrent.futures.TimeoutError:
+        return 429
+    except:
+        logger.exception("Algo inesperado aconteceu.")
+        return 500
 
     # hoje
     city        = json_data.get("resolvedAddress")
@@ -78,6 +86,12 @@ def try_city(city_name, api_key: str, lang="pt") -> typing.Union[str, int]:
     i_feelslike_a   = round(Decimal(feelslike_a))
 
     return f"Esse é o clima em {city} às {time} (horário local):\n\n:temp: Temperatura: {i_temp} \xb0C (sensação de {i_feelslike} \xb0C)\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex} de 10\n:umidade: Umidade do ar: ~{i_humidity}%\n\n\U0001f4c6 A previsão para amanhã é {i_temp_max} \xb0C de máxima, mínima de {i_temp_min} \xb0C e sensação de até {i_feelslike_a} \xb0C, com céu {descricao}\n\n#clima #BolhaClima"
+
+
+def _read_json(url):
+    with urllib.request.urlopen(url) as doc:
+        return json.loads(doc.read().decode())
+
 
 if __name__ == "__main__":
     DEFAULT_CITY = "recife"

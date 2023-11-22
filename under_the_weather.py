@@ -36,6 +36,7 @@ class StreamListenerWeather(StreamListener):
         self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
         self.false_loc = ("legal",)
         self.maintenance = os.getenv("MAINTENANCE_STATUS")
+        self.timeout = os.getenv("API_TIMEOUT")
         super().__init__()
 
     def on_update(self, status):
@@ -116,7 +117,7 @@ class StreamListenerWeather(StreamListener):
             return
 
         print("TENTANDO: " + msg)
-        report = try_city(msg, self.apikey, self.lang)
+        report = try_city(msg, self.apikey, self.lang, self.timeout)
 
         if isinstance(report, str):
             print(report)
