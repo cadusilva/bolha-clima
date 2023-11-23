@@ -26,32 +26,32 @@ python3 -m spacy download pt_core_news_md
 
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
-    `WTH_API`
-        API obtida no serviço VisualCrossing. Por padrão, vem vazio. Você precisa gerar e especificar a sua própria chave.
+`WTH_API`
+    API obtida no serviço VisualCrossing. Por padrão, vem vazio. Você precisa gerar e especificar a sua própria chave.
 
-    `WTH_LANG`
-        Idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/). Por padrão, vem o idioma português (`pt`).
+`WTH_LANG`
+    Idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/). Por padrão, vem o idioma português (`pt`).
 
-    `MASTODON_TOKEN`
-        Token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, vem vazio. Você precisa gerar e especificar seu próprio token.
+`MASTODON_TOKEN`
+    Token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, vem vazio. Você precisa gerar e especificar seu próprio token.
 
-    `MASTODON_BASE_URL`
-        A URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
+`MASTODON_BASE_URL`
+    A URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
 
-    `MASTODON_BIO_ONLINE`
-        Texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
+`MASTODON_BIO_ONLINE`
+    Texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 
-    `MASTODON_BIO_OFFLINE`
-        Texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
+`MASTODON_BIO_OFFLINE`
+    Texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 
-    `UTW_NER_MODEL`
-        Nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/). Por padrão, vem `pt_core_news_md`. Mude apenas se souber o que está fazendo.
+`UTW_NER_MODEL`
+    Nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/). Por padrão, vem `pt_core_news_md`. Mude apenas se souber o que está fazendo.
 
-    `MAINTENANCE_STATUS`
-        Se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
+`MAINTENANCE_STATUS`
+    Se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
 
-    `API_TIMEOUT`
-        Até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado. Por padrão, são 15 segundos.
+`API_TIMEOUT`
+    Até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado. Por padrão, são 15 segundos.
 
 Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
