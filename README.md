@@ -18,7 +18,7 @@ Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
 Clone o repositório e instale as dependências:
 
-```bash
+``` bash
 git clone https://github.com/cadusilva/bolha-clima.git
 pip3 install lxml mastodon.py python-dotenv spacy
 python3 -m spacy download pt_core_news_md
@@ -33,13 +33,14 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
 - `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
 - `UTW_NER_MODEL`: nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/)
-- `MAINTENANCE_STATUS`: se definido, ativa modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
+- `MAINTENANCE_STATUS`: se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
+- `API_TIMEOUT`: até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado.
 
 Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
 Para executar o bot, digite:
 
-```python
+``` python
 python3 under_the_weather.py
 ```
 
@@ -76,7 +77,7 @@ O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso
 
 Você também pode consultar o clima atual de qualquer cidade sem precisar instalar o bot em uma instância. Basta usar o seguinte comando:
 
-```python
+``` python
 python3 openweathermap.py "Nome da Cidade"
 ```
 
@@ -86,7 +87,7 @@ Se o nome for simples, como `Recife`, não precisa de aspas. Mas se for composto
 
 Para rodar o bot como um serviço do sistema, use o seguinte exemplo:
 
-```ini
+``` ini
 cat << EOF > /etc/systemd/system/clima.service
 [Unit]
 Description=Bot Bolha Clima
@@ -109,23 +110,21 @@ EOF
 
 Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Para iniciar o serviço e fazer ele carregar junto com o sistema, execute:
 
-```bash
+``` bash
 systemctl daemon-reload
 systemctl enable --now clima
 ```
 
 Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de funcionamento:
 
-```bash
+``` bash
 systemctl status clima
 journalctl -u clima
 ```
 
 ## Modo de Manutenção
 
-Neste modo o robô não consulta a API e simplesmente responde com uma
-mensagem personalizada de que está indisponível no momento ou outra
-razão.
+Neste modo o robô não consulta a API e simplesmente responde com uma mensagem personalizada de que está indisponível no momento. Você pode personalizar a mensagem no arquivo `.env` e, no texto de resposta, onde tem `{}` será substituído pelo usuário a quem se está respondendo.
 
 ## Créditos
 
