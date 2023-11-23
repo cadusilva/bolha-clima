@@ -26,15 +26,32 @@ python3 -m spacy download pt_core_news_md
 
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
-- `WTH_API`: API obtida no serviço VisualCrossing.
-- `WTH_LANG`: idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado".
-- `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3.
-- `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Exemplo: `https://bolha.one`
-- `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
-- `MASTODON_BIO_OFFLINE`: texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
-- `UTW_NER_MODEL`: nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/)
-- `MAINTENANCE_STATUS`: se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
-- `API_TIMEOUT`: até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado.
+    `WTH_API`
+        API obtida no serviço VisualCrossing. Por padrão, vem vazio. Você precisa gerar e especificar a sua própria chave.
+
+    `WTH_LANG`
+        Idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/). Por padrão, vem o idioma português (`pt`).
+
+    `MASTODON_TOKEN`
+        Token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, vem vazio. Você precisa gerar e especificar seu próprio token.
+
+    `MASTODON_BASE_URL`
+        A URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
+
+    `MASTODON_BIO_ONLINE`
+        Texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
+
+    `MASTODON_BIO_OFFLINE`
+        Texto que vai aparecer na bio do bot quando o robozinho não estiver sendo executado.
+
+    `UTW_NER_MODEL`
+        Nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/). Por padrão, vem `pt_core_news_md`. Mude apenas se souber o que está fazendo.
+
+    `MAINTENANCE_STATUS`
+        Se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
+
+    `API_TIMEOUT`
+        Até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado. Por padrão, são 15 segundos.
 
 Lembre-se de editar as linhas [a partir da 99](https://github.com/cadusilva/bolha-clima/blob/f1554702554bb9ab922727beaa6cbc5ab1bd7422/under_the_weather.py#L99-L119) para definir os perfis que serão notificados em caso de erros.
 
@@ -44,7 +61,7 @@ Para executar o bot, digite:
 python3 under_the_weather.py
 ```
 
-Agora basta falar com ele. Exemplo:
+Agora basta falar com ele através de alguma plataforma do fediverso (Mastodon, Firefish, GoToSocial, etc). Exemplo:
 
 ```
 Diz aí, @climabot@instancia.xyz, como está o clima no Recife?
@@ -71,7 +88,7 @@ Caso o nome da cidade informada seja o mesmo em diferentes estados, você pode e
 @climabot@instancia.xyz Ipapeva, SP
 ```
 
-O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso ele retorne o município errado, você pode especificar o estado onde fica o município esperado. Para ter respostas mais precisas, prefira sempre especificar na consulta a UF do estado onde fica a cidade desejada.
+O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso ele retorne o município errado, você pode especificar o estado onde fica a cidade esperada. Para ter respostas mais precisas, prefira sempre especificar na consulta a UF do estado.
 
 ## Usando sem robô
 
@@ -88,7 +105,6 @@ Se o nome for simples, como `Recife`, não precisa de aspas. Mas se for composto
 Para rodar o bot como um serviço do sistema, use o seguinte exemplo:
 
 ``` ini
-cat << EOF > /etc/systemd/system/clima.service
 [Unit]
 Description=Bot Bolha Clima
 After=network-online.target
@@ -105,7 +121,6 @@ Environment="PYTHONUNBUFFERED=1"
 
 [Install]
 WantedBy=multi-user.target
-EOF
 ```
 
 Lembre-se de alterar o caminho `/opt/clima` caso tenha clonado os arquivos em outro lugar e o nome do seu bot na linha `Description`. Para iniciar o serviço e fazer ele carregar junto com o sistema, execute:
@@ -119,12 +134,14 @@ Em caso de problemas, execute um dos dois comandos abaixo para ler os logs de fu
 
 ``` bash
 systemctl status clima
-journalctl -u clima
+journalctl -u clima [--follow]
 ```
 
 ## Modo de Manutenção
 
-Neste modo o robô não consulta a API e simplesmente responde com uma mensagem personalizada de que está indisponível no momento. Você pode personalizar a mensagem no arquivo `.env` e, no texto de resposta, onde tem `{}` será substituído pelo usuário a quem se está respondendo.
+Neste modo o robô não consulta a API e simplesmente responde dizendo que está indisponível no momento. Para ativar, descomente a linha `MAINTENANCE_STATUS` no arquivo `.env` e personalize a mensagem que será enviada ao usuário. Onde você colocar `{}` será onde irá aparecer o @ da pessoa a quem se está respondendo.
+
+Para desativar o modo manutenção, comente a linha que começa com `MAINTENANCE_STATUS` e reinicie o bot.
 
 ## Créditos
 
