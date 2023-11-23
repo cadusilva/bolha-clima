@@ -18,6 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 """
 
+import logging
 import os
 
 from dotenv import load_dotenv
@@ -26,6 +27,8 @@ from mastodon import Mastodon, StreamListener
 import spacy
 
 from openweathermap import try_city
+
+logger = logging.getLogger(__name__)
 
 
 class StreamListenerWeather(StreamListener):
@@ -36,7 +39,12 @@ class StreamListenerWeather(StreamListener):
         self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
         self.false_loc = ("legal",)
         self.maintenance = os.getenv("MAINTENANCE_STATUS")
-        self.timeout = os.getenv("API_TIMEOUT")
+        try:
+            self.timeout = int(os.getenv("API_TIMEOUT"))
+        except TypeError | ValueError:
+            logger.warning("Falha ao obter valor de API_TIMEOUT")
+            self.timeout = None
+
         super().__init__()
 
     def on_update(self, status):
