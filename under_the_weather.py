@@ -142,7 +142,7 @@ class StreamListenerWeather(StreamListener):
                 )
             elif report == 401:
                 self.mastodon.status_post(
-                    f"Foi mal @{acct}, não estou conseguindo saber o clima. Pode dar uma ajuda aqui, @cadu@bolha.one ?",
+                    f"Foi mal @{acct}, não estou conseguindo saber o clima. Pode dar uma ajuda aqui, @cadusilva@bolha.one?",
                     in_reply_to_id=status,
                     visibility=visibility,
                 )
@@ -160,8 +160,8 @@ class StreamListenerWeather(StreamListener):
                 )
             else:
                 self.mastodon.status_post(
-                    f"Parece que você encontrou uma falha, @{acct} ! "
-                    f"@cadu@bolha.one e @nandavereda@ayom.media tentarão resolver ;)",
+                    f"Parece que você encontrou uma falha, @{acct}! "
+                    f"@cadusilva@bolha.one e @nandavereda@ayom.media tentarão resolver ;)",
                     in_reply_to_id=status,
                     visibility=visibility,
                 )
