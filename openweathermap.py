@@ -30,20 +30,20 @@ import urllib.request
 from dotenv import load_dotenv
 from decimal import Decimal
 
-BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q="
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
 
-def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "/?unitGroup=metric&include=current&lang="
+        + "&units=metric&lang="
         + lang
-        + "&elements=temp,feelslike,humidity,uvindex,conditions,datetime,cloudcover,description,tempmax,tempmin,feelslikemax&key="
+        + "&appid="
         + api_key
     )
 
@@ -57,35 +57,20 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
         logger.exception("Algo inesperado aconteceu.")
         return 500
 
-    # hoje
-    city        = json_data.get("resolvedAddress")
-    weather     = json_data.get("currentConditions").get("conditions").lower()
-    temp        = json_data.get("currentConditions").get("temp")
-    feelslike   = json_data.get("currentConditions").get("feelslike")
-    humidity    = json_data.get("currentConditions").get("humidity")
-    uvindex     = json_data.get("currentConditions").get("uvindex")
-    clouds      = json_data.get("currentConditions").get("cloudcover")
-    time        = json_data.get("currentConditions").get("datetime")[:5]
+    city        = json_data.get("name")
+    country     = json_data.get("sys").get("country")
+    weather     = json_data.get("weather")[0].get("description").lower()
+    temp        = json_data.get("main").get("temp")
+    feelslike   = json_data.get("main").get("feels_like")
+    humidity    = json_data.get("main").get("humidity")
+    clouds      = json_data.get("clouds").get("all")
 
-    # amanhã
-    temp_max    = json_data.get("days")[0].get("tempmax")
-    temp_min    = json_data.get("days")[0].get("tempmin")
-    feelslike_a = json_data.get("days")[0].get("feelslikemax")
-    descricao   = json_data.get("days")[0].get("description").lower()
-
-    # hoje
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
     i_humidity  = "{:.0f}".format(humidity)
-    i_uvindex   = "{:.0f}".format(uvindex)
     i_clouds    = "{:.0f}".format(clouds)
 
-    # amanhã
-    i_temp_max      = round(Decimal(temp_max))
-    i_temp_min      = round(Decimal(temp_min))
-    i_feelslike_a   = round(Decimal(feelslike_a))
-
-    return f"Esse é o clima em {city} às {time} (horário local):\n\n:temp: Temperatura: {i_temp} \xb0C (sensação de {i_feelslike} \xb0C)\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:sunny: Índice UV: {i_uvindex} de 10\n:umidade: Umidade do ar: ~{i_humidity}%\n\n\U0001f4c6 A previsão para amanhã é {i_temp_max} \xb0C de máxima, mínima de {i_temp_min} \xb0C e sensação de até {i_feelslike_a} \xb0C, com céu {descricao}\n\n#clima #BolhaClima"
+    return f"Esse é o clima atual em {city} ({country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: {i_humidity}%\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
