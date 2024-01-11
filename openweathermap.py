@@ -77,7 +77,7 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
 #    i_humidity  = "{:.0f}".format(humidity)
 #    i_clouds    = "{:.0f}".format(clouds)
 
-    return f"Esse é o clima atual em {city} ({region}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n:sunny: Índice UV: {i_uv} de 11\n\n\U0001f552 Atualizado às {updated} (horário local)\n\U0001f5fa\uFE0F Ver no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de WeatherAPI\n\n#clima #BolhaClima"
+    return f"Esse é o clima atual em {city} ({region}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n:sunny: Índice UV: {i_uv} de 11\n\n\U0001f552 Atualizado às {updated} (horário local)\n\U0001f5fa\uFE0F Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de WeatherAPI\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
