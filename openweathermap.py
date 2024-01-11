@@ -30,20 +30,20 @@ import urllib.request
 from dotenv import load_dotenv
 from decimal import Decimal
 
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q="
+BASE_URL = "https://api.weatherapi.com/v1/current.json?q="
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
 
-def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "&units=metric&lang="
+        + "&aqi=no&lang="
         + lang
-        + "&appid="
+        + "&key="
         + api_key
     )
 
@@ -57,20 +57,27 @@ def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typi
         logger.exception("Algo inesperado aconteceu.")
         return 500
 
-    city        = json_data.get("name")
-    country     = json_data.get("sys").get("country")
-    weather     = json_data.get("weather")[0].get("description").lower()
-    temp        = json_data.get("main").get("temp")
-    feelslike   = json_data.get("main").get("feels_like")
-    humidity    = json_data.get("main").get("humidity")
-    clouds      = json_data.get("clouds").get("all")
+    updated     = json_data.get("current").get("last_updated")[-5:]
+    city        = json_data.get("location").get("name")
+    region      = json_data.get("location").get("region")
+    country     = json_data.get("location").get("country")
+    weather     = json_data.get("current").get("condition").get("text").lower()
+    temp        = json_data.get("current").get("temp_c")
+    feelslike   = json_data.get("current").get("feelslike_c")
+    humidity    = json_data.get("current").get("humidity")
+    clouds      = json_data.get("current").get("cloud")
+    uv          = json_data.get("current").get("uv")
+
+    lat         = json_data.get("location").get("lat")
+    lon         = json_data.get("location").get("lon")
 
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
-    i_humidity  = "{:.0f}".format(humidity)
-    i_clouds    = "{:.0f}".format(clouds)
+    i_uv        = round(Decimal(uv))
+#    i_humidity  = "{:.0f}".format(humidity)
+#    i_clouds    = "{:.0f}".format(clouds)
 
-    return f"Esse é o clima atual em {city} ({country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto\n:umidade: Umidade do ar: {i_humidity}%\n\n#clima #BolhaClima"
+    return f"Esse é o clima atual em {city} ({region}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n:sunny: Índice UV: {i_uv} de 11\n\n\U0001f552 Atualizado às {updated} (horário local)\n\U0001f5fa\uFE0F Ver no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de WeatherAPI\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
