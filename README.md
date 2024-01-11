@@ -7,10 +7,10 @@ O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde c
 - o índice UV
 - como está o céu, se está encoberto
 - a umidade do ar
-- as chances de chover
-- a previsão para o dia seguinte
+- o índice UV
+- um link para localizar a cidade no mapa
 
-Os dados são fornecidos pelo serviço **VisualCrossing** com base em estações meteorológicas de aeroportos. Você precisa [obter uma chave de API](https://www.visualcrossing.com/sign-up), que é gratuita e permite 1.000 consultas por dia.
+Os dados são fornecidos pelo serviço **WeatherAPI** com base em estações meteorológicas de aeroportos. Você precisa [obter uma chave de API](https://www.weatherapi.com/my/), que é gratuita e permite 1 milhão de consultas por mês.
 
 Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
@@ -28,9 +28,9 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 
 - `WTH_API`: API obtida no serviço VisualCrossing. Por padrão, vem vazio. Você precisa gerar e especificar a sua própria chave.
 
-- `WTH_LANG`: idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://www.visualcrossing.com/resources/documentation/weather-api/timeline-weather-api/). Por padrão, vem o idioma português (`pt`).
+- `WTH_LANG`: idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://www.weatherapi.com/docs/#intro-request). Por padrão, vem o idioma português (`pt`).
 
-- `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, vem vazio. Você precisa gerar e especificar seu próprio token.
+- `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, o campo vem vazio no `.env`. Você precisa gerar e especificar seu próprio token.
 
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
 
@@ -40,7 +40,7 @@ Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.en
 
 - `UTW_NER_MODEL`: nome do modelo de [NER](https://wikiless.bolha.one/wiki/Named-entity_recognition) usado pela [biblioteca spacy](https://spacy.io/). Por padrão, vem `pt_core_news_md`. Mude apenas se souber o que está fazendo.
 
-- `MAINTENANCE_STATUS`: se a linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
+- `MAINTENANCE_STATUS`: se esta linha não estiver comentada, ativa o modo de manutenção. Use `{}` na mensagem como referência ao usuário interlocutor.
 
 - `API_TIMEOUT`: até quantos segundos o bot deve esperar por uma resposta da API. Caso ele expire, é retornado o erro `429` e o usuário é informado que o bot está sobrecarregado. Por padrão, são 15 segundos.
 
@@ -61,25 +61,20 @@ Diz aí, @climabot@instancia.xyz, como está o clima no Recife?
 A resposta será algo assim:
 
 ```
-Esse é o clima em Recife, PE, Brasil às 22:00 (horário local):
+Esse é o clima atual em Recife (Pernambuco, Brazil):
 
-- Temperatura: 27 °C (sensação de 30 °C)
-- Céu agora: parcialmente nublado, 50% encoberto
-- Índice UV: 0 de 10
-- Umidade do ar: ~79%
-- Chances de chover hoje: ~100%
+- Temperatura: 26 °C
+- Sensação térmica: 28 °C
+- Céu agora: encoberto, 75% encoberto
+- Umidade do ar: 89%
+- Índice UV: 9 de 11
 
-- A previsão para amanhã é 30 °C de máxima, mínima de 27 °C e sensação de até 34 °C, com céu parcialmente nublado ao longo do dia com uma chance de chuva ao longo do dia. Há 10% de chances de clima severo, como tempestades.
+🕒 Atualizado às 09:00 (horário local)
+🗺️ Ver no mapa: https://www.openstreetmap.org/?mlat=-8.05&mlon=-34.9
+ℹ️ Com informações de WeatherAPI
 ```
 
-Caso o nome da cidade informada seja o mesmo em diferentes estados, você pode especificar a `UF` do estado desejado para ter o resultado esperado. Exemplo:
-
-```
-@climabot@instancia.xyz Ipapeva, MG
-@climabot@instancia.xyz Ipapeva, SP
-```
-
-O bot tenta adivinhar a cidade certa mesmo que você não informe a UF mas, caso ele retorne o município errado, você pode especificar o estado onde fica a cidade esperada. Para ter respostas mais precisas, prefira sempre especificar na consulta a UF do estado.
+> A **WeatherAPI** não lida muito bem com acentuação do idioma português. Por isso, `João Pessoa` pode retornar `Pessoa, AL`. Nesse caso, tire a acentuação que o resultado deve vir corretamente.
 
 ## Usando sem robô
 
