@@ -70,13 +70,13 @@ Você pode rodar seu robozinho do clima dentro de um contêiner Docker usando o 
 
 Primeiro, gere a imagem:
 
-```
+``` bash
 docker build -t bolhaclima:latest .
 ```
 
-Então edite o arquivo `docker-compose.yml`:
+Então edite o arquivo `docker-compose.yml`, inserindo as informações corretas no lugar de `<insira aqui>`, conforme explicado antes neste arquivo.
 
-```
+``` yaml
 version: '3.3'
 services:
     clima:
@@ -99,7 +99,7 @@ services:
 
 Agora coloque o robô em execução:
 
-```
+``` bash
 docker-compose up -d
 ```
 
