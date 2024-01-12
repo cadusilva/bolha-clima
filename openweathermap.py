@@ -57,7 +57,7 @@ def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typi
         logger.exception("Algo inesperado aconteceu.")
         return 500
 
-    city        = json_data.get("sys").get("name")
+    city        = json_data.get("name")
     country     = json_data.get("sys").get("country")
     weather     = json_data.get("weather")[0].get("description").lower()
     temp        = json_data.get("main").get("temp")
