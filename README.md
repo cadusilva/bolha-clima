@@ -64,6 +64,47 @@ Esse é o clima atual em Recife (BR):
 ℹ️ Com informações de OpenWeatherMap
 ```
 
+## Usando com Docker
+
+Você pode rodar seu robozinho do clima dentro de um contêiner Docker usando o arquivo `Dockerfile` e `docker-compose.yml` adicionados ao repositório. Caso vá usar desta forma, não precisa editar o arquivo `.env`.
+
+Primeiro, gere a imagem:
+
+```
+docker build -t bolhaclima:latest .
+```
+
+Então edite o arquivo `docker-compose.yml`:
+
+```
+version: '3.3'
+services:
+    clima:
+        init: true
+        container_name: clima
+        image: bolhaclima:latest
+        restart: unless-stopped
+        environment:
+            WTH_API: <insira aqui>
+            WTH_LANG: pt_br
+            MASTODON_TOKEN: <insira aqui>
+            MASTODON_BASE_URL: <insira aqui>
+            MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🟢 Status: estou aqui"
+            MASTODON_BIO_OFFLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🔴 Status: volto já"
+            UTW_NER_MODEL: pt_core_news_md
+#           MAINTENANCE_STATUS="Desculpa {}, no momento estou em manutenção, mas logo retornarei!"
+            API_TIMEOUT: 15
+            PYTHONUNBUFFERED: 1
+```
+
+Agora coloque o robô em execução:
+
+```
+docker-compose up -d
+```
+
+Após gerar a imagem com o arquivo `Dockerfile`, você pode usar o conteúdo do arquivo `docker-compose.yml` como um Stack do Portainer. Também será possível acompanhar o funcionamento do robô através dos logs exibidos pelo Portainer.
+
 ## Usando sem robô
 
 Você também pode consultar o clima atual de qualquer cidade sem precisar instalar o bot em uma instância. Basta usar o seguinte comando:
