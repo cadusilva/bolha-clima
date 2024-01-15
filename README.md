@@ -26,7 +26,7 @@ python3 -m spacy download pt_core_news_md
 
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
-- `WTH_API`: no momento não tem serventia, pois está sendo utilizado o serviço `wttr.in`. Pode ser comentado, deixado em branco
+- `WTH_API`: no momento não tem serventia pois está sendo utilizado o serviço `wttr.in`, que dispensa API. A linha pode ser comentada, deixada em branco, etc.
 - `WTH_LANG`: idioma das mensagens retornadas pelo **wttr.in**, como "céu limpo" ou "nublado". Por padrão, vem o idioma português brasileiro (`pt-br`).
 - `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, o campo vem vazio no `.env`. Você precisa gerar e especificar seu próprio token.
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
