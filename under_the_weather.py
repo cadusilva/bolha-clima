@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 class StreamListenerWeather(StreamListener):
     def __init__(self, mastodon: Mastodon):
-        self.apikey = os.getenv("WTH_API")
+#        self.apikey = os.getenv("WTH_API")
         self.lang = os.getenv("WTH_LANG")
         self.mastodon = mastodon
         self.nlp = spacy.load(os.getenv("UTW_NER_MODEL"))
@@ -125,7 +125,8 @@ class StreamListenerWeather(StreamListener):
             return
 
         print("TENTANDO: " + msg)
-        report = try_city(msg, self.apikey, self.lang, self.timeout)
+#        report = try_city(msg, self.apikey, self.lang, self.timeout)
+        report = try_city(msg, self.lang, self.timeout)
 
         if isinstance(report, str):
             print(report)
