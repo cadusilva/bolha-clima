@@ -88,7 +88,7 @@ services:
         image: bolhaclima:latest
         restart: unless-stopped
         environment:
-#            WTH_API: <insira aqui>
+            WTH_API:
             WTH_LANG: pt-br
             MASTODON_TOKEN: <insira aqui>
             MASTODON_BASE_URL: <insira aqui>
