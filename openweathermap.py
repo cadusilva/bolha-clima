@@ -34,7 +34,7 @@ BASE_URL = "https://wttr.in/"
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
-def try_city(city_name, api_key: str, lang="pt-br", timeout: int = None) -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
@@ -61,7 +61,7 @@ def try_city(city_name, api_key: str, lang="pt-br", timeout: int = None) -> typi
     city        = json_data.get("nearest_area")[0].get("areaName")[0].get("value")
     state       = json_data.get("nearest_area")[0].get("region")[0].get("value")
     country     = json_data.get("nearest_area")[0].get("country")[0].get("value")
-    weather     = json_data.get("current_condition")[0].get("lang_pt-br")[0].get("value").lower()
+    weather     = json_data.get("current_condition")[0].get("lang_" + os.getenv("WTH_LANG") )[0].get("value").lower()
     temp        = json_data.get("current_condition")[0].get("temp_C")
     feelslike   = json_data.get("current_condition")[0].get("FeelsLikeC")
     humidity    = json_data.get("current_condition")[0].get("humidity")
