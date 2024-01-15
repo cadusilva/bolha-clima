@@ -8,9 +8,9 @@ O **Bolha Clima** é um robozinho escrito em Python para Mastodon que responde c
 - a umidade do ar
 - um link para localizar a cidade no mapa
 
-Os dados são fornecidos pelo serviço **OpenWeatherMap** com base em estações meteorológicas. Você precisa [obter uma chave de API](https://home.openweathermap.org/api_keys), que é gratuita e permite 1 consulta por segundo.
+Os dados são fornecidos pelo serviço [**wttr.in**](https://github.com/chubin/wttr.in/).
 
-> O link que mostra a localização da cidade consultada no mapa não retorna sua posição precisa, apenas um ponto vago dentro do município informado. Não é coletada sua posição precisa, nem qualquer dado é armazenado na **Bolha.one**. Mesmo os toots com as respostas são apagados depois de 1 semana.
+> O link que mostra a localização da cidade consultada no mapa não retorna sua posição precisa, apenas um ponto vago dentro do município informado. Não é coletada sua geolocalização, nem qualquer dado é armazenado na **Bolha.one**. Mesmo os toots com as respostas são apagados depois de 1 semana.
 
 Experimente o bot em funcionamento aqui: https://bolha.one/@clima
 
@@ -26,8 +26,8 @@ python3 -m spacy download pt_core_news_md
 
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
-- `WTH_API`: API obtida no serviço VisualCrossing. Por padrão, vem vazio. Você precisa gerar e especificar a sua própria chave.
-- `WTH_LANG`: idioma das mensagens retornadas pelo VisualCrossing, como "céu limpo" ou "nublado". Veja a lista com os [idiomas disponíveis](https://openweathermap.org/current#multi). Por padrão, vem o idioma português brasileiro (`pt_br`).
+- `WTH_API`: no momento não tem serventia, pois está sendo utilizado o serviço `wttr.in`.
+- `WTH_LANG`: idioma das mensagens retornadas pelo **wttr.in**, como "céu limpo" ou "nublado". Por padrão, vem o idioma português brasileiro (`pt-br`).
 - `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, o campo vem vazio no `.env`. Você precisa gerar e especificar seu próprio token.
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
@@ -53,15 +53,18 @@ Diz aí, @climabot@instancia.xyz, como está o clima no Recife?
 A resposta será algo assim:
 
 ```
-Esse é o clima atual em Recife (BR):
+Esse é o clima atual em Recife (Pernambuco, Brazil):
 
-- Temperatura: 25 °C
-- Sensação térmica: 26 °C
-- Céu agora: nuvens dispersas, 40% encoberto
-- Umidade do ar: 94%
+- Temperatura: 27 °C
+- Sensação térmica: 29 °C
+- Índice UV: 1 de 11
+- Céu agora: limpo, 13% encoberto
+- Umidade do ar: 75%
 
-🗺️ Ver cidade no mapa: https://www.openstreetmap.org/?mlat=-8.0539&mlon=-34.8811
-ℹ️ Com informações de OpenWeatherMap
+📆 Para amanhã são esperados temperatura média de 28 °C, com mínima de 26 °C e máxima de 30 °C.
+
+📍 Ver cidade no mapa: https://www.openstreetmap.org/?mlat=-8.050&mlon=-34.900
+ℹ️ Com informações de wttr.in
 ```
 
 ## Usando com Docker
@@ -85,8 +88,8 @@ services:
         image: bolhaclima:latest
         restart: unless-stopped
         environment:
-            WTH_API: <insira aqui>
-            WTH_LANG: pt_br
+#            WTH_API: <insira aqui>
+            WTH_LANG: pt-br
             MASTODON_TOKEN: <insira aqui>
             MASTODON_BASE_URL: <insira aqui>
             MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🟢 Status: estou aqui"
@@ -103,7 +106,7 @@ Agora coloque o robô em execução:
 docker-compose up -d
 ```
 
-Após gerar a imagem com o arquivo `Dockerfile`, você pode usar o conteúdo do arquivo `docker-compose.yml` como um Stack do Portainer. Também será possível acompanhar o funcionamento do robô através dos logs exibidos pelo Portainer.
+Após gerar a imagem com o arquivo `Dockerfile`, você pode usar o conteúdo do arquivo `docker-compose.yml` como um Stack do **Portainer**. Também será possível acompanhar o funcionamento do robô através dos logs exibidos pelo Portainer.
 
 ## Usando sem robô
 
