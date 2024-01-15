@@ -3,11 +3,11 @@ services:
     clima:
         init: true
         container_name: clima
-        image: bolhaclima:latest
+        image: code.bolha.one/bolha/clima:latest
         restart: unless-stopped
         environment:
             WTH_API:
-            WTH_LANG: pt-br
+            WTH_LANG: pt
             MASTODON_TOKEN: <insira aqui>
             MASTODON_BASE_URL: <insira aqui>
             MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🟢 Status: estou aqui"

@@ -27,7 +27,7 @@ python3 -m spacy download pt_core_news_md
 Crie uma conta em qualquer instância do Mastodon para o bot usar, renomeie `.env.example` para `.env` e edite o arquivo. Veja o que cada linha significa:
 
 - `WTH_API`: no momento não tem serventia pois está sendo utilizado o serviço `wttr.in`, que dispensa API. A linha pode ser comentada, deixada em branco, etc.
-- `WTH_LANG`: idioma das mensagens retornadas pelo **wttr.in**, como "céu limpo" ou "nublado". Por padrão, vem o idioma português brasileiro (`pt-br`).
+- `WTH_LANG`: idioma das mensagens retornadas pelo **wttr.in**, como "céu limpo" ou "nublado". Por padrão, vem o idioma português (`pt`).
 - `MASTODON_TOKEN`: token necessário para que o robô use a conta destinada a ele. Após logar na instância com a conta do bot, você pode [gerar um token aqui](https://token.bolha.one/?scopes=read+write), preenchendo os campos 1 e 3. Por padrão, o campo vem vazio no `.env`. Você precisa gerar e especificar seu próprio token.
 - `MASTODON_BASE_URL`: a URL da instância onde fica a conta que será usada pelo robozinho incluindo `https://` no início, mas sem barra no final. Por padrão, vem vazio. Você precisa especificar sua URL como no exemplo: `https://bolha.one`.
 - `MASTODON_BIO_ONLINE`: texto que vai aparecer na bio do bot quando o robozinho estiver em funcionamento.
@@ -69,44 +69,19 @@ Esse é o clima atual em Recife (Pernambuco, Brazil):
 
 ## Usando com Docker
 
-Você pode rodar seu robozinho do clima dentro de um contêiner Docker usando o arquivo `Dockerfile` e `docker-compose.yml` adicionados ao repositório. Caso vá usar desta forma, não precisa editar o arquivo `.env`.
+Você pode rodar seu robozinho do clima dentro de um contêiner Docker facilmente. Caso vá usar desta forma, não precisa editar o arquivo `.env`.
 
-Primeiro, gere a imagem:
+Primeiro, baixe a imagem:
 
 ``` bash
-docker build -t bolhaclima:latest .
+docker pull code.bolha.one/bolha/clima:latest
 ```
 
-Então edite o arquivo `docker-compose.yml`, inserindo as informações corretas no lugar de `<insira aqui>`, conforme explicado antes neste arquivo.
-
-``` yaml
-version: '3.3'
-services:
-    clima:
-        init: true
-        container_name: clima
-        image: bolhaclima:latest
-        restart: unless-stopped
-        environment:
-            WTH_API:
-            WTH_LANG: pt-br
-            MASTODON_TOKEN: <insira aqui>
-            MASTODON_BASE_URL: <insira aqui>
-            MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🟢 Status: estou aqui"
-            MASTODON_BIO_OFFLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🔴 Status: volto já"
-            UTW_NER_MODEL: pt_core_news_md
-#           MAINTENANCE_STATUS="Desculpa {}, no momento estou em manutenção, mas logo retornarei!"
-            API_TIMEOUT: 15
-            PYTHONUNBUFFERED: 1
-```
-
-Agora coloque o robô em execução:
+Você pode então usar o arquivo `docker-compose.yml` para adicionar as variáveis de ambiente (equivalente ao arquivo `.env`) e subir seu contêiner.
 
 ``` bash
 docker-compose up -d
 ```
-
-Após gerar a imagem com o arquivo `Dockerfile`, você pode usar o conteúdo do arquivo `docker-compose.yml` como um Stack do **Portainer**. Também será possível acompanhar o funcionamento do robô através dos logs exibidos pelo Portainer.
 
 ## Usando sem robô
 
