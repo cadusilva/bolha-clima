@@ -34,7 +34,6 @@ BASE_URL = "https://wttr.in/"
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
-
 def try_city(city_name, api_key: str, lang="pt-br", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
@@ -76,7 +75,7 @@ def try_city(city_name, api_key: str, lang="pt-br", timeout: int = None) -> typi
     avgAmanha   = json_data.get("weather")[1].get("avgtempC")
     maxAmanha   = json_data.get("weather")[1].get("maxtempC")
 
-    return f"Esse é o clima atual em {city} ({state}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {uvIndex} de 11\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n\n\U0001f4c6 Para amanhã são esperados temperatura média de {avgAmanha} \xb0C, com mínima de {minAmanha} \xb0C e máxima de {maxAmanha} \xb0C.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de wttr.in\n\n#clima #BolhaClima"
+    return f"Esse é o clima atual em {city} ({state}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {uvIndex} de 11\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n\n\U0001f4c6 Para amanhã, a temperatura média deve ser de {avgAmanha} \xb0C, com mínima de {minAmanha} \xb0C e máxima de {maxAmanha} \xb0C.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de wttr.in\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
@@ -90,6 +89,6 @@ if __name__ == "__main__":
     print(
         try_city(
             sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CITY,
-#            os.getenv("WTH_API"),
+            os.getenv("WTH_API"),
         )
     )
