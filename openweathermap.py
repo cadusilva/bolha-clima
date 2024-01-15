@@ -35,7 +35,7 @@ executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
 
-def try_city(city_name, lang="pt-br", timeout: int = None) -> typing.Union[str, int]:
+def try_city(city_name, api_key: str, lang="pt-br", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
