@@ -30,21 +30,20 @@ import urllib.request
 from dotenv import load_dotenv
 from decimal import Decimal
 
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q="
+BASE_URL = "https://wttr.in/"
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
 
-def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typing.Union[str, int]:
+def try_city(city_name, lang="pt-br", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
 
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "&units=metric&lang="
+        + "?m&lang="
         + lang
-        + "&appid="
-        + api_key
+        + "&format=j1"
     )
 
     try:
@@ -57,23 +56,27 @@ def try_city(city_name, api_key: str, lang="pt_br", timeout: int = None) -> typi
         logger.exception("Algo inesperado aconteceu.")
         return 500
 
-    city        = json_data.get("name")
-    country     = json_data.get("sys").get("country")
-    weather     = json_data.get("weather")[0].get("description").lower()
-    temp        = json_data.get("main").get("temp")
-    feelslike   = json_data.get("main").get("feels_like")
-    humidity    = json_data.get("main").get("humidity")
-    clouds      = json_data.get("clouds").get("all")
+    lat         = json_data.get("nearest_area")[0].get("latitude")
+    lon         = json_data.get("nearest_area")[0].get("longitude")
 
-    lat         = json_data.get("coord").get("lat")
-    lon         = json_data.get("coord").get("lon")
+    city        = json_data.get("nearest_area")[0].get("areaName")[0].get("value")
+    state       = json_data.get("nearest_area")[0].get("region")[0].get("value")
+    country     = json_data.get("nearest_area")[0].get("country")[0].get("value")
+    weather     = json_data.get("current_condition")[0].get("lang_pt-br")[0].get("value").lower()
+    temp        = json_data.get("current_condition")[0].get("temp_C")
+    feelslike   = json_data.get("current_condition")[0].get("FeelsLikeC")
+    humidity    = json_data.get("current_condition")[0].get("humidity")
+    clouds      = json_data.get("current_condition")[0].get("cloudcover")
+    uvIndex     = json_data.get("current_condition")[0].get("uvIndex")
 
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
-    i_humidity  = "{:.0f}".format(humidity)
-#    i_clouds    = "{:.0f}".format(clouds)
+    
+    minAmanha   = json_data.get("weather")[1].get("mintempC")
+    avgAmanha   = json_data.get("weather")[1].get("avgtempC")
+    maxAmanha   = json_data.get("weather")[1].get("maxtempC")
 
-    return f"Esse é o clima atual em {city} ({country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {i_humidity}%\n\n\U0001f5fa\uFE0F Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de OpenWeatherMap\n\n#clima #BolhaClima"
+    return f"Esse é o clima atual em {city} ({state}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {uvIndex} de 11\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n\n\U0001f4c6 Para amanhã são esperados temperatura média de {avgAmanha} \xb0C, com mínima de {minAmanha} \xb0C e máxima de {maxAmanha} \xb0C.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de wttr.in\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
@@ -87,6 +90,6 @@ if __name__ == "__main__":
     print(
         try_city(
             sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CITY,
-            os.getenv("WTH_API"),
+#            os.getenv("WTH_API"),
         )
     )
