@@ -27,6 +27,7 @@ import typing
 import urllib.parse
 import urllib.request
 
+from unidecode import unidecode
 from dotenv import load_dotenv
 from decimal import Decimal
 
@@ -36,6 +37,7 @@ logger = logging.getLogger(__name__)
 
 def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.Union[str, int]:
     city_name = city_name.strip().rstrip("!?").replace("&apos;", "'").strip()
+    city_name = unidecode(city_name)
 
     full_api_url = (
         BASE_URL
@@ -54,7 +56,7 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     except:
         logger.exception("Algo inesperado aconteceu.")
         return 500
-
+    
     lat         = json_data.get("nearest_area")[0].get("latitude")
     lon         = json_data.get("nearest_area")[0].get("longitude")
 
