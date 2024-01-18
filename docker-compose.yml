@@ -6,7 +6,7 @@ services:
         image: code.bolha.one/bolha/clima:latest
         restart: unless-stopped
         environment:
-            WTH_API:
+#           WTH_API:
             WTH_LANG: pt
             MASTODON_TOKEN: <insira aqui>
             MASTODON_BASE_URL: <insira aqui>
