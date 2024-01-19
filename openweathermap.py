@@ -31,7 +31,8 @@ from unidecode import unidecode
 from dotenv import load_dotenv
 from decimal import Decimal
 
-BASE_URL = "https://wttr.in/"
+lang = os.getenv("WTH_LANG")
+BASE_URL = f"https://{lang}.wttr.in/"
 executor = concurrent.futures.ThreadPoolExecutor()
 logger = logging.getLogger(__name__)
 
@@ -42,8 +43,8 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     full_api_url = (
         BASE_URL
         + urllib.parse.quote(city_name)
-        + "?m&lang="
-        + lang
+        + "?m"
+#        + lang
         + "&format=j1"
     )
 
@@ -69,6 +70,8 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     humidity    = json_data.get("current_condition")[0].get("humidity")
     clouds      = json_data.get("current_condition")[0].get("cloudcover")
     uvIndex     = json_data.get("current_condition")[0].get("uvIndex")
+    chuva       = json_data.get("current_condition")[0].get("precipMM")
+    vento       = json_data.get("current_condition")[0].get("windspeedKmph")
 
     i_temp      = round(Decimal(temp))
     i_feelslike = round(Decimal(feelslike))
@@ -76,8 +79,8 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     minAmanha   = json_data.get("weather")[1].get("mintempC")
     avgAmanha   = json_data.get("weather")[1].get("avgtempC")
     maxAmanha   = json_data.get("weather")[1].get("maxtempC")
-
-    return f"Esse é o clima atual em {city} ({state}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {uvIndex} de 11\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:umidade: Umidade do ar: {humidity}%\n\n\U0001f4c6 Para amanhã, a temperatura média deve ser de {avgAmanha} \xb0C, com mínima de {minAmanha} \xb0C e máxima de {maxAmanha} \xb0C.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de wttr.in\n\n#clima #BolhaClima"
+    
+    return f"Esse é o clima atual em {city} ({state}, {country}):\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {uvIndex} de 11\n:ceu: Céu agora: {weather}, {clouds}% encoberto\n:rain: Precipitação de {chuva} mm e ventos a {vento} km/h\n:umidade: Umidade do ar: {humidity}%\n\n\U0001f4c6 Para amanhã, a temperatura média deve ser de {avgAmanha} \xb0C, com mínima de {minAmanha} \xb0C e máxima de {maxAmanha} \xb0C.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de wttr.in\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
