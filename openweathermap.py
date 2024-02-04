@@ -67,7 +67,7 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     clouds      = json_data.get("currentConditions").get("cloudcover")
     uvIndex     = json_data.get("currentConditions").get("uvindex")
     precipprob  = json_data.get("currentConditions").get("precipprob")
-    datetime    = json_data.get("currentConditions").get("datetime")[:5]
+    datetime    = json_data.get("currentConditions").get("datetime")[:2]
 
     i_temp          = round(Decimal(temp))
     i_feelslike     = round(Decimal(feelslike))
@@ -84,7 +84,7 @@ def try_city(city_name, api_key: str, lang="pt", timeout: int = None) -> typing.
     i_sensacaoMax   = round(Decimal(sensacaoMax))
     i_amanhaRain    = round(Decimal(amanhaRain))
 
-    return f"O clima em {location} às {datetime} é:\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {i_uvIndex} de 11\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto, {i_precipprob}% de chances de chuva\n:umidade: Umidade do ar: {i_humidity}%\n\n\U0001f4c5 Para amanhã, a temperatura pode alcançar {i_amanhaMax} \xb0C com sensação térmica de até {i_sensacaoMax} \xb0C e {i_amanhaRain}% de chances de chover.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de VisualCrossing\n\u231A O horário mencionado é o da cidade pesquisada.\n\n#clima #BolhaClima"
+    return f"O clima em {location} às {datetime}h é:\n\n:temp: Temperatura: {i_temp} \xb0C\n:s_termica: Sensação térmica: {i_feelslike} \xb0C\n:sunny: Índice UV: {i_uvIndex} de 11\n:ceu: Céu agora: {weather}, {i_clouds}% encoberto, {i_precipprob}% de chances de chuva\n:umidade: Umidade do ar: {i_humidity}%\n\n\U0001f4c5 Para amanhã, a temperatura pode alcançar {i_amanhaMax} \xb0C com sensação térmica de até {i_sensacaoMax} \xb0C e {i_amanhaRain}% de chances de chover.\n\n\U0001f4cd Ver cidade no mapa: https://www.openstreetmap.org/?mlat={lat}&mlon={lon}\n\u2139\uFE0F Com informações de VisualCrossing\n\u231A O horário mencionado é o da cidade pesquisada.\n\n#clima #BolhaClima"
 
 
 def _read_json(url):
