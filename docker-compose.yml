@@ -6,13 +6,12 @@ services:
         image: code.bolha.one/bolha/clima:latest
         restart: unless-stopped
         environment:
-#           WTH_API:
+            WTH_API: 
             WTH_LANG: pt
-            MASTODON_TOKEN: <insira aqui>
-            MASTODON_BASE_URL: <insira aqui>
-            MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🟢 Status: estou aqui"
-            MASTODON_BIO_OFFLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o país: Recife, BR\n\n🔴 Status: volto já"
+            MASTODON_TOKEN: 
+            MASTODON_BASE_URL: 
+            MASTODON_BIO_ONLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o estado: Recife, PE\n\n🟢 Status: estou aqui"
+            MASTODON_BIO_OFFLINE: "Oi! Sou um robô que responde com o clima da cidade que você me perguntar. Basta me citar em uma mensagem contendo o nome do município desejado.\n\nExemplo: como está o clima em Recife?\nCaso a resposta mencione a cidade errada, informa o estado: Recife, PE\n\n🔴 Status: volto já"
             UTW_NER_MODEL: pt_core_news_md
-#           MAINTENANCE_STATUS="Desculpa {}, no momento estou em manutenção, mas logo retornarei!"
+            #MAINTENANCE_STATUS: "Desculpa {}, no momento o site da nossa fonte tá fora do ar."
             API_TIMEOUT: 15
-            PYTHONUNBUFFERED: 1
