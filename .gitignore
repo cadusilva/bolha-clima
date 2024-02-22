@@ -5,4 +5,4 @@ undertheweather.secret
 openweather_apikey.secret
 .env
 push
-
+__pycache__
